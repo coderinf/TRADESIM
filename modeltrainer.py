@@ -16,7 +16,7 @@ ORDER_SIZES = [10, 20, 30, 50, 75, 100]
 STANDARD_ORDER_SIZE = 20  # Used for slippage simulation
 
 
-# ✅ Simulate VWAP execution for a market buy order
+#Simulate VWAP execution for a market buy order
 def simulate_execution_price(order_size, asks):
     qty_remaining = order_size
     cost = 0.0
@@ -33,7 +33,7 @@ def simulate_execution_price(order_size, asks):
     return cost / order_size
 
 
-# ✅ WebSocket tick collection
+#  WebSocket tick collection
 async def collect_ticks(WSS_URL, on_tick=None):
     async with websockets.connect(WSS_URL) as websocket:
         print("[INFO] Connected to WebSocket")
@@ -79,7 +79,7 @@ async def collect_ticks(WSS_URL, on_tick=None):
         train_maker_taker_model(df)
 
 
-# ✅ Train slippage model using real simulated slippage (VWAP)
+#  Train slippage model using real simulated slippage (VWAP)
 def train_slippage_model(df):
     df = df.copy()
     df["asks"] = df["asks"].apply(json.loads)
@@ -104,7 +104,7 @@ def train_slippage_model(df):
     print("[INFO] Slippage model trained and saved.")
 
 
-# ✅ Estimate Almgren-Chriss model (η, γ)
+#  Estimate Almgren-Chriss model (η, γ)
 def estimate_almgren_chriss(df):
     df["return"] = np.log(df["mid"] / df["mid"].shift(1))
     df["volatility"] = df["return"].rolling(window=20).std()
@@ -137,7 +137,7 @@ def estimate_almgren_chriss(df):
     print(f"[RESULT] Almgren-Chriss model saved. η: {model.coef_[0]:.6f}, γ: {model.coef_[1]:.6f}")
 
 
-# ✅ Train logistic regression for taker probability
+#  Train logistic regression for taker probability
 def train_maker_taker_model(df):
     df["return"] = np.log(df["mid"] / df["mid"].shift(1))
     df["volatility"] = df["return"].rolling(window=20).std()
